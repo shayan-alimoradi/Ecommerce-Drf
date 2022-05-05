@@ -1,5 +1,6 @@
 # Core django imports import
 from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
@@ -82,3 +83,16 @@ class SignOutSerializer(serializers.Serializer):
             RefreshToken(self.token)
         except TokenError:
             pass
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    def validate_new_password(self, value):
+        validate_password(value)
+        return value

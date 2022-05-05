@@ -15,5 +15,10 @@ router.register("user", views.UserViewSet, basename="user")
 urlpatterns = [
     path("sign-up/", views.SignUpAPIView.as_view(), name="sign_up"),
     path("sign-out/", views.SignOutAPIView.as_view(), name="sign_out"),
+    path(
+        "change-password/",
+        views.ChangePasswordAPIView.as_view(),
+        name="change_password",
+    ),
     path("", include(router.urls)),
 ]
