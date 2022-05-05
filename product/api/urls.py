@@ -15,5 +15,7 @@ router.register("category", views.CategoryViewSet)
 
 
 urlpatterns = [
+    path("like/", views.LikeProductAPIView.as_view(), name="like"),
+    path("dislike/", views.DislikeProductAPIView.as_view(), name="dislike"),
     path("", include(router.urls)),
 ]

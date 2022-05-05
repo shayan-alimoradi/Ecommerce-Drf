@@ -1,16 +1,19 @@
 # Core django imports
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 
 # 3rd-party imports
 from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
+    IsAuthenticated,
 )
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework import filters
 from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 
 # Local imports
@@ -81,3 +84,51 @@ class CategoryViewSet(ModelViewSet):
         else:
             permission_classes = (AllowAny,)
         return [permission() for permission in permission_classes]
+
+
+class LikeProductAPIView(APIView):
+    bad_request_message = "An error has occured"
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        product = get_object_or_404(Product, slug=request.data.get("slug"))
+        if request.user not in product.like.all():
+            product.like.add(request.user)
+            return Response({"detail": "Add to like"}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": self.bad_request_message}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    def delete(self, request):
+        product = get_object_or_404(Product, slug=request.data.get("slug"))
+        if request.user in product.like.all():
+            product.like.remove(request.user)
+            return Response({"detail": "Remove from like"}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": self.bad_request_message}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class DislikeProductAPIView(APIView):
+    bad_request_message = "An error has occured"
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        product = get_object_or_404(Product, slug=request.data.get("slug"))
+        if request.user not in product.dislike.all():
+            product.dislike.add(request.user)
+            return Response({"detail": "Add to dislike"}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": self.bad_request_message}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    def delete(self, request):
+        product = get_object_or_404(Product, slug=request.data.get("slug"))
+        if request.user in product.dislike.all():
+            product.dislike.remove(request.user)
+            return Response(
+                {"detail": "Remove from dislike"}, status=status.HTTP_200_OK
+            )
+        return Response(
+            {"detail": self.bad_request_message}, status=status.HTTP_400_BAD_REQUEST
+        )
