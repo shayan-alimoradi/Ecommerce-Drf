@@ -4,7 +4,7 @@ from django.urls import path, include
 # 3rd-party imports
 from rest_framework.routers import DefaultRouter
 
-# Local import
+# Local imports
 from . import views
 
 app_name = "api_account"
@@ -14,5 +14,6 @@ router.register("user", views.UserViewSet, basename="user")
 
 urlpatterns = [
     path("sign-up/", views.SignUpAPIView.as_view(), name="sign_up"),
+    path("sign-out/", views.SignOutAPIView.as_view(), name="sign_out"),
     path("", include(router.urls)),
 ]
