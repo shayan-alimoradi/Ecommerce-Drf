@@ -11,6 +11,7 @@ app_name = "api_account"
 
 router = DefaultRouter()
 router.register("user", views.UserViewSet, basename="user")
+router.register("profile", views.ProfileViewSet)
 
 urlpatterns = [
     path("sign-up/", views.SignUpAPIView.as_view(), name="sign_up"),

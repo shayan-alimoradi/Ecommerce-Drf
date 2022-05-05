@@ -9,6 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework import permissions
 from rest_framework import status
 
@@ -18,6 +19,7 @@ from .serializers import (
     UserSerializer,
     SignOutSerializer,
     ChangePasswordSerializer,
+    UserRetrieveSerializer,
 )
 
 User = get_user_model()
@@ -78,3 +80,22 @@ class ChangePasswordAPIView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProfileViewSet(ModelViewSet):
+    queryset = User.objects.filter(is_active=True)
+    serializer_class = UserRetrieveSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    http_method_names = ["get", "patch", "head"]
+
+    @action(detail=False, methods=["GET", "PATCH"])
+    def me(self, request):
+        user = User.objects.filter(email=request.user.email).first()
+        if request.method == "GET":
+            serializer = self.serializer_class(user)
+            return Response(serializer.data)
+        elif request.method == "PATCH":
+            serializer = self.serializer_class(user, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
