@@ -18,8 +18,9 @@ from .serializers import (
     ProductListSerializer,
     ProductDetailSerializer,
     ProductCreateUpdateSerializer,
+    CategorySerializer,
 )
-from product.models import Product
+from product.models import Product, Category
 from .filters import ProductFilter
 
 
@@ -66,3 +67,17 @@ class ProductViewSet(ModelViewSet):
     #         return Response({"product": serializer, "related_obj": related_obj})
     #     except Product.DoesNotExist:
     #         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ("title",)
+
+    def get_permissions(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            permission_classes = (IsAdminUser,)
+        else:
+            permission_classes = (AllowAny,)
+        return [permission() for permission in permission_classes]
