@@ -49,3 +49,21 @@ class CreateNewUserSerializer(serializers.ModelSerializer):
         user_obj.set_password(password)
         user_obj.save()
         return user_obj
+
+
+class UserSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name="api_account:user-detail", lookup_field="pk"
+    )
+    phoneNumber = serializers.ModelField(
+        model_field=User()._meta.get_field("phone_number")
+    )
+
+    class Meta:
+        model = User
+        fields = (
+            "url",
+            "username",
+            "email",
+            "phoneNumber",
+        )
