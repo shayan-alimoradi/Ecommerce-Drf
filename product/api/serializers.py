@@ -71,10 +71,10 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             "slug",
             "description",
             "available",
-            "unit_price",
+            "unitPrice",
             "amount",
             "discount",
-            "total_price",
+            "totalPrice",
             "image",
             "sell",
             # 'comments',
@@ -116,7 +116,7 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
             "image",
             "sell",
             "category",
-            "tags",
+            # "tags",
         )
         extra_kwargs = {"description": {"required": False}}
 
