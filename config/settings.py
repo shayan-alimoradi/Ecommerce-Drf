@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # Local Apps
     "account.apps.AccountConfig",
+    # 3rd-party Apps
+    "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
@@ -127,3 +129,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # User Model
 AUTH_USER_MODEL = "account.User"
+
+# Rest_Framework
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
