@@ -9,10 +9,6 @@ User = get_user_model()
 
 
 class CreateNewUserSerializer(serializers.ModelSerializer):
-    """
-    Currently unused in preference of the below.
-    """
-
     username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     password = serializers.CharField(write_only=True)
