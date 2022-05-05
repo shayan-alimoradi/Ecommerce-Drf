@@ -40,8 +40,8 @@ class ProductListSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "title",
-            "unit_price",
-            "price_wuth_tax",
+            "unitPrice",
+            "price_with_tax",
             "amount",
             "created",
             "category",

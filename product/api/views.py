@@ -7,9 +7,11 @@ from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
 )
-from rest_framework import filters, status
+from rest_framework import filters
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Local imports
 from .serializers import (
@@ -18,13 +20,16 @@ from .serializers import (
     ProductCreateUpdateSerializer,
 )
 from product.models import Product
+from .filters import ProductFilter
 
 
 class ProductViewSet(ModelViewSet):
     filter_backends = (
+        DjangoFilterBackend,
         filters.SearchFilter,
         filters.OrderingFilter,
     )
+    filterset_class = ProductFilter
     search_fields = ("title", "description")
     ordering_fields = ("created",)
 
