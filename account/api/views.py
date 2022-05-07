@@ -26,6 +26,15 @@ User = get_user_model()
 
 
 class SignUpAPIView(CreateAPIView):
+    """
+    Create user
+
+    input_data => {
+        "username": <string>,
+        "email": <email>,
+        "password": <string>
+    }
+    """
     queryset = User.objects.all()
     serializer_class = CreateNewUserSerializer
 
