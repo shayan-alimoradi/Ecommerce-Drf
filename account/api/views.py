@@ -59,10 +59,10 @@ class ChangePasswordAPIView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get_object(self, queryset=None):
+    def get_object(self):
         return self.request.user
 
-    def put(self, request, *args, **kwargs):
+    def put(self, request):
         self.object = self.get_object()
         serializer = ChangePasswordSerializer(data=request.data)
 
@@ -94,8 +94,7 @@ class ProfileViewSet(ModelViewSet):
         if request.method == "GET":
             serializer = self.serializer_class(user)
             return Response(serializer.data)
-        elif request.method == "PATCH":
-            serializer = self.serializer_class(user, data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data)
+        serializer = self.serializer_class(user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
