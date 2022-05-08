@@ -1,7 +1,7 @@
 # Stdlib imports
 from decimal import Decimal
 
-# 3rd-party import
+# 3rd-party imports
 from rest_framework import serializers
 
 # Local imports
