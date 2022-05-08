@@ -35,6 +35,7 @@ class SignUpAPIView(CreateAPIView):
         "password": <string>
     }
     """
+
     queryset = User.objects.all()
     serializer_class = CreateNewUserSerializer
 
