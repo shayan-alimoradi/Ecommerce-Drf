@@ -1,10 +1,10 @@
-# Core django imports import
+# Core django imports
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
-# Third-party import
+# 3-party imports
 from rest_framework import serializers
 
 User = get_user_model()

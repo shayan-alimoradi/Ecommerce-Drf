@@ -1,7 +1,7 @@
 # Core django imports
 from django.contrib.auth import get_user_model
 
-# 3rd-party import
+# 3rd-party imports
 from rest_framework.generics import (
     CreateAPIView,
 )
