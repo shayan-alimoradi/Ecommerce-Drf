@@ -15,4 +15,5 @@ router.register("", views.OrderAPIView, basename="order")
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("coupon/<int:order_id>/", views.coupon_order),
 ]

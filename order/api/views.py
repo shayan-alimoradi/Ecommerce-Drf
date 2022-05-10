@@ -1,4 +1,5 @@
 # Core django imports
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
@@ -54,3 +55,23 @@ class OrderAPIView(ModelViewSet):
         order = serializer.save()
         serializer = OrderSerializer(order)
         return Response(serializer.data)
+
+
+@api_view(("POST",))
+def coupon_order(request, order_id):
+    code = request.data.get("code")
+    time = timezone.now()
+    try:
+        coupon = Coupon.objects.get(
+            code=code, start__lte=time, end__gte=time, active=True
+        )
+    except Coupon.DoesNotExist:
+        return Response(
+            {"Error": "Code does not exists or it is expired"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    coupon.users.add(request.user.id)
+    order = get_object_or_404(Order, ok=order_id)
+    order.discount = coupon.discount
+    order.save()
+    return Response({"Msg": "Success"}, status=status.HTTP_200_OK)
