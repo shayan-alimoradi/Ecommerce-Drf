@@ -39,7 +39,7 @@ def test_create_order_if_valid_data_returns_201(api_client):
         data={
             "user_id": user.id,
         },
-        **header
+        **header,
     )
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
