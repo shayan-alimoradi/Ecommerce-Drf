@@ -1,5 +1,6 @@
 # Core django imports
 from django.db import transaction
+from django.core.mail import EmailMessage
 
 # 3rd-party imports
 from rest_framework import serializers
@@ -7,6 +8,7 @@ from rest_framework import serializers
 # Local imports
 from order.models import Order, OrderItem
 from cart.models import CartItem, Cart
+from .tasks import send_order_email
 
 
 class OrderCreateSerializer(serializers.Serializer):
@@ -28,6 +30,14 @@ class OrderCreateSerializer(serializers.Serializer):
             OrderItem.objects.bulk_create(order_items)
 
             Cart.objects.filter(pk=cart_id).delete()
+
+            email = EmailMessage(
+            subject="Test Subject",
+            body="Thanks for your order, Hope you enjoy it.",
+            # from_email=user,
+            to=[email],
+            )
+            send_order_email.delay(email)
 
             return order
 

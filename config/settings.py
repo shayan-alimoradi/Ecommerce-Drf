@@ -156,3 +156,12 @@ CELERY_RESULT_BACKEND = "rpc://"
 CELERY_RESUL_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ACCEPT_CONTENT = ["json", "pickle"]
+
+# Email Backend
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "singul.virasad@gmail.com"
+EMAIL_HOST_PASSWORD = "ealmcovkolngtyll"
+EMAIL_PORT = 587
+
