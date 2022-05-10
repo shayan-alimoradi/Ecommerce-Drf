@@ -6,7 +6,7 @@ from cart.models import Cart
 
 @pytest.mark.django_db
 def test_create_cart(api_client):
-    response = api_client.post("/api/cart/")
+    response = api_client.post("/api/v1/cart/")
 
     assert response.status_code == status.HTTP_201_CREATED
 
@@ -15,7 +15,7 @@ def test_create_cart(api_client):
 def test_retrieve_cart(api_client):
     cart = Cart.objects.create()
 
-    response = api_client.get(f"/api/cart/{cart.id}/")
+    response = api_client.get(f"/api/v1/cart/{cart.id}/")
 
     assert response.status_code == status.HTTP_200_OK
 
@@ -24,7 +24,7 @@ def test_retrieve_cart(api_client):
 def test_destroy_cart(api_client):
     cart = Cart.objects.create()
 
-    response = api_client.delete(f"/api/cart/{cart.id}/")
+    response = api_client.delete(f"/api/v1/cart/{cart.id}/")
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
     
