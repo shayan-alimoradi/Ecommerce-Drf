@@ -32,12 +32,14 @@ services:
     networks:
       - ecommerce-network
 
-  celery_worker:
+  celery:
+    environment:
+      - C_FORCE_ROOT="true"
     build: .
-    container_name: celery_worker
+    container_name: ecommerce_celery
     command: "celery -A config worker -l info"
     depends_on:
-      - eccomerce_backend
+      - ecommerce_backend
     restart: on-failure
     networks:
       - ecommerce-network

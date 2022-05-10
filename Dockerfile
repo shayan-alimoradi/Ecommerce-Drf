@@ -4,7 +4,7 @@ LABEL maintainer="shayan.aimoradii@gmail.com"
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /src/ 
-COPY requirements.txt poetry.lock pyproject.toml /src/
+COPY poetry.lock pyproject.toml /src/
 
 RUN pip install -U pip
 RUN pip install poetry
