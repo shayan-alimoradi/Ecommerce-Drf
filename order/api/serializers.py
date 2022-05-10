@@ -32,10 +32,10 @@ class OrderCreateSerializer(serializers.Serializer):
             Cart.objects.filter(pk=cart_id).delete()
 
             email = EmailMessage(
-            subject="Test Subject",
-            body="Thanks for your order, Hope you enjoy it.",
-            # from_email=user,
-            to=[email],
+                subject="Test Subject",
+                body="Thanks for your order, Hope you enjoy it.",
+                # from_email=user,
+                to=[email],
             )
             send_order_email.delay(email)
 
