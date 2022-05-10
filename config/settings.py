@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "account.apps.AccountConfig",
     "product.apps.ProductConfig",
     "cart.apps.CartConfig",
+    "order.apps.OrderConfig",
     # 3rd-party Apps
     "rest_framework",
     "rest_framework_simplejwt",
