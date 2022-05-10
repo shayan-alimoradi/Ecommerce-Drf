@@ -152,7 +152,7 @@ SIMPLE_JWT = {
 }
 
 # Celery
-CELERY_BROKER_URL = "amqp://rabbitmq"
+CELERY_BROKER_URL = "amqp://ecommerce_rabbitmq"
 CELERY_RESULT_BACKEND = "rpc://"
 CELERY_RESUL_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "pickle"
