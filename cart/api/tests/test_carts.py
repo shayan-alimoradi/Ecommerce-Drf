@@ -27,4 +27,3 @@ def test_destroy_cart(api_client):
     response = api_client.delete(f"/api/v1/cart/{cart.id}/")
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
-    
