@@ -1,0 +1,72 @@
+version: "3"
+
+services:
+  backend:
+    container_name: ecommerce_backend
+    build: .
+    command: sh -c "python manage.py migrate &&
+                    python manage.py collectstatic --noinput &&
+                    gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/microservice:rw # map data and files from parent directory in host to microservice directory in docker containe
+      - static_volume:/src/static
+    ports:
+      - '8080:8000'
+    restart: on-failure
+    depends_on:
+      - ecommerce_db
+    networks:
+      - ecommerce-network
+
+  db:
+    image: postgres
+    container_name: ecommerce_db
+    environment:
+        - POSTGRES_DB=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+    volumes:
+        - pgdata:/var/lib/postgresql/data/
+    ports:
+      - "5418:5432"
+    networks:
+      - ecommerce-network
+
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    command: "celery -A config worker -l info"
+    depends_on:
+      - eccomerce_backend
+    restart: on-failure
+    networks:
+      - ecommerce-network
+
+  rabbitmq:
+    container_name: ecommerce_rabbitmq
+    image: rabbitmq:3.9-management
+    networks:
+      - ecommerce-network
+    ports:
+      - "5672:5672"
+
+  nginx:
+    build: ./nginx
+    container_name: ecommerce_nginx
+    ports:
+      - "82:80"
+    volumes:
+      - static_volume:/src/static
+    depends_on:
+      - ecommerce_backend
+    restart: "on-failure"
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+   name: ecommerce_network
+
+volumes:
+  pgdata:
+  static_volume:
