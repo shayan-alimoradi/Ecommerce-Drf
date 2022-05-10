@@ -26,3 +26,23 @@ class CommentSerializer(serializers.ModelSerializer):
             object_id=instance.id,
         )
         return validated_data
+
+
+class CommentReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ("content",)
+
+    def create(self, validated_data):
+        instance = get_object_or_404(Product, pk=self.context.get("product_id"))
+        user_id = self.context.get("user_id")
+        comment_id = self.context.get("comment_id")
+
+        Comment.objects.create(
+            author_id=user_id,
+            content=validated_data.get("content"),
+            content_type=instance.get_content_type,
+            object_id=instance.id,
+            parent_id=comment_id,
+        )
+        return validated_data
