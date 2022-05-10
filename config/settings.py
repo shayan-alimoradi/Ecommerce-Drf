@@ -149,3 +149,10 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+# Celery
+CELERY_BROKER_URL = "amqp://rabbitmq"
+CELERY_RESULT_BACKEND = "rpc://"
+CELERY_RESUL_SERIALIZER = "json"
+CELERY_TASK_SERIALIZER = "pickle"
+CELERY_ACCEPT_CONTENT = ["json", "pickle"]
