@@ -42,10 +42,10 @@ If you want to run in the background
 $ docker-compose up -d
 ```
 
-*You can see the list of all the API's from this url: **localhost:8001/swagger/***
+*You can see the list of all the API's from this url: **localhost:82/swagger/***
 
 *And for more details and information about API's such as `Input data`*
-*and `Response data` go to this address: **localhost:8001/redoc/***
+*and `Response data` go to this address: **localhost:82/redoc/***
 
 *API's are accessible by docker containers which you can see with below command.*
 ```
