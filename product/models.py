@@ -1,4 +1,5 @@
 # Core django imports
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.text import slugify
@@ -7,6 +8,9 @@ from django.conf import settings
 
 # 3rd-party imports
 from rest_framework.reverse import reverse as api_reverse
+
+# Local imports
+from comment.models import Comment
 
 
 class Category(models.Model):
@@ -61,6 +65,7 @@ class Product(TimeStamp):
     favourite = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="fav"
     )
+    comments = GenericRelation(Comment)
 
     class Meta(TimeStamp.Meta):
         ordering = ("-created",)
