@@ -10,7 +10,7 @@ from . import views
 app_name = "api_product"
 
 router = DefaultRouter()
-router.register("", views.ProductViewSet, basename="product")
+router.register("products", views.ProductViewSet, basename="product")
 router.register("category", views.CategoryViewSet)
 
 
