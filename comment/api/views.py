@@ -28,7 +28,7 @@ class CommentViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {
             "user_id": self.request.user.id,
-            "appointment_id": self.kwargs["appointment_pk"],
+            "product_id": self.kwargs["product_pk"],
         }
 
     def get_queryset(self):
@@ -51,7 +51,7 @@ class CommentReplyViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {
             "user_id": self.request.user.id,
-            "appointment_id": self.kwargs["appointment_pk"],
+            "product_id": self.kwargs["product_pk"],
             "comment_id": self.kwargs["comment_pk"],
         }
 
