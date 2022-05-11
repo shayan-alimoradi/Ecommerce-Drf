@@ -9,6 +9,7 @@ from product.models import (
     Product,
     Category,
 )
+from comment.api.serializers import CommentSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -63,6 +64,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     totalPrice = serializers.ModelField(
         model_field=Product()._meta.get_field("total_price")
     )
+    # comments = serializers.SerializerMethodField()
+    # get_content_type = serializers.CharField(source="get_content_type", read_only=True)
 
     class Meta:
         model = Product
@@ -77,7 +80,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             "totalPrice",
             "image",
             "sell",
-            # 'comments',
+            # "comments",
+            # "get_content_type",
             "category",
             "favourite",
             "like",
@@ -90,7 +94,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         try:
             image = obj.image.url
         except:
-            image = None
+            image = None    
         return image
 
     # def get_category(self, obj):
@@ -98,6 +102,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     def get_category(self, obj):
         return Category.objects.all().values("id", "title")
+    
+    # def get_comments(self, obj):
+    #     return CommentSerializer(instance=obj.comments).data
 
 
 class ProductCreateUpdateSerializer(serializers.ModelSerializer):
