@@ -1,5 +1,5 @@
 # Ecommerce Drf
-*This repo implements an Ecommerce app what uses **Django Rest_Framework** as a rest-api*
+*This repo implements an Ecommerce app that uses **Django Rest Framework** as a rest-api*
 
 ## Technologies used in this project
 
@@ -18,14 +18,12 @@
     Poetry - Dependency management and packaging
 ```
 
-## Building a development environment
+## Installation
 
 First **clone** or **download** this project.
 ```
 $ git clone https://github.com/Shayan-9248/Ecommerce-Drf.git
 ```
-
-### Installation
 
 Then download and install docker and docker-compose
 
