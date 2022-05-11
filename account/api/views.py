@@ -20,6 +20,7 @@ from .serializers import (
     SignOutSerializer,
     ChangePasswordSerializer,
     UserRetrieveSerializer,
+    CreateTestUserSerializer,
 )
 
 User = get_user_model()
@@ -38,6 +39,15 @@ class SignUpAPIView(CreateAPIView):
 
     queryset = User.objects.all()
     serializer_class = CreateNewUserSerializer
+
+
+class TestSignUpAPIView(CreateAPIView):
+    """
+    This endpoint is for testing
+    """
+
+    queryset = User.objects.all()
+    serializer_class = CreateTestUserSerializer
 
 
 class UserViewSet(ModelViewSet):

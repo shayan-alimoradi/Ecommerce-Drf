@@ -52,6 +52,32 @@ class CreateNewUserSerializer(serializers.ModelSerializer):
         user_obj.save()
         return user_obj
 
+    
+class CreateTestUserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "email",
+            "password",
+        )
+
+    def create(self, validated_data):
+        username = validated_data.get("username")
+        email = validated_data.get("email")
+        password = validated_data.get("password")
+        user_obj = User(
+            username=username,
+            email=email,
+        )
+        user_obj.set_password(password)
+        user_obj.save()
+        return user_obj
+
 
 class UserSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
