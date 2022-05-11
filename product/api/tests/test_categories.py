@@ -18,25 +18,21 @@ User = get_user_model()
 @pytest.fixture
 def create_category(api_client):
     def do_create_category(category):
-        return api_client.post("/api/v1/product/category/", category)
+        return api_client.post("/api/v1/category/", category)
 
     return do_create_category
 
 
 @pytest.mark.django_db
 @pytest.mark.skip
-def test_create_category_if_user_is_not_staff_returns_403(
-    authenticate, create_category
-):
-    authenticate()
+def test_create_category_if_user_is_not_staff_returns_403(api_client):
 
-    response = create_category({"title": "a"})
+    response = api_client.post("/api/v1/category/", data={"title": "a"})
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
 def test_create_category_if_data_is_invalid_returns_400(authenticate, create_category):
     authenticate(is_staff=True)
 
@@ -48,7 +44,6 @@ def test_create_category_if_data_is_invalid_returns_400(authenticate, create_cat
 
 
 @pytest.mark.django_db
-@pytest.mark.skip
 def test_create_category_if_data_is_valid_returns_201(authenticate, create_category):
     authenticate(is_staff=True)
 
@@ -62,7 +57,7 @@ def test_create_category_if_data_is_valid_returns_201(authenticate, create_categ
 def test_retrieve_if_category_exists_returns_200(api_client):
     category = baker.make(Category)
 
-    response = api_client.get(f"/api/v1/product/category/{category.id}/")
+    response = api_client.get(f"/api/v1/category/{category.id}/")
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data == {"id": category.id, "title": category.title}
@@ -73,7 +68,7 @@ def test_delete_category_if_user_is_staff_returns_204(authenticate, api_client):
     category = baker.make(Category)
     authenticate(is_staff=True)
 
-    response = api_client.delete(f"/api/v1/product/category/{category.id}/")
+    response = api_client.delete(f"/api/v1/category/{category.id}/")
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
@@ -83,6 +78,6 @@ def test_delete_category_if_user_is_not_staff_returns_403(authenticate, api_clie
     category = baker.make(Category)
     authenticate()
 
-    response = api_client.delete(f"/api/v1/product/category/{category.id}/")
+    response = api_client.delete(f"/api/v1/category/{category.id}/")
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
