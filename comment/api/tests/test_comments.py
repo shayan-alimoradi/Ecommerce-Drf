@@ -16,28 +16,29 @@ from comment.models import Comment
 User = get_user_model()
 
 
-# @pytest.mark.django_db
-# def test_get_all_comments_returns_200(api_client):
-#     product = baker.make(Product)
-#     response = api_client.get(f"/api/v1/products/{product.id}/comments/")
+@pytest.mark.django_db
+def test_get_all_comments_returns_200(api_client):
+    product = baker.make(Product)
+    response = api_client.get(f"/api/v1/products/{product.id}/comments/")
 
-#     assert response.status_code == status.HTTP_200_OK
-
-
-# @pytest.mark.django_db
-# def test_get_one_comment_returns_200(api_client):
-#     product = baker.make(Product)
-#     comment = baker.make(Comment)
-#     response = api_client.get(f"/api/v1/products/{product.id}/comments/{comment.id}/")
-
-#     response_content = json.loads(response.content)
-
-#     assert response.status_code == status.HTTP_200_OK
-#     assert response_content.get("content") == comment.content
-#     assert response_content.get("object_id") == comment.object_id
+    assert response.status_code == status.HTTP_200_OK
 
 
 @pytest.mark.django_db
+def test_get_one_comment_returns_200(api_client):
+    product = baker.make(Product)
+    comment = baker.make(Comment)
+    response = api_client.get(f"/api/v1/products/{product.id}/comments/{comment.id}/")
+
+    response_content = json.loads(response.content)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response_content.get("content") == comment.content
+    assert response_content.get("object_id") == comment.object_id
+
+
+@pytest.mark.django_db
+@pytest.mark.skip
 def test_create_comment_if_user_is_authenticated(api_client, authenticate):
     authenticate(is_staff=True)
     user = api_client.post(
@@ -86,77 +87,77 @@ def test_create_comment_if_user_is_authenticated(api_client, authenticate):
     assert response.status_code == status.HTTP_201_CREATED
 
 
-# @pytest.mark.skip
-# def test_create_comment_if_user_is_not_authenticated(api_client):
-#     product = baker.make(Product)
-#     user = baker.make(User)
+@pytest.mark.skip
+def test_create_comment_if_user_is_not_authenticated(api_client):
+    product = baker.make(Product)
+    user = baker.make(User)
 
-#     response = api_client.post(
-#         f"/api/v1/products/{product.id}/comments/",
-#         data={
-#             "author_id": user.id,
-#             "content": "hello",
-#             "content_type": product.get_content_type,
-#             "object_id": product.id,
-#         },
-#     )
+    response = api_client.post(
+        f"/api/v1/products/{product.id}/comments/",
+        data={
+            "author_id": user.id,
+            "content": "hello",
+            "content_type": product.get_content_type,
+            "object_id": product.id,
+        },
+    )
 
-#     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
-
-# @pytest.mark.django_db
-# def test_update_comment_if_user_is_not_authenticated(api_client):
-#     product = baker.make(Product)
-#     user = baker.make(User)
-#     comment = baker.make(Comment)
-
-#     response = api_client.patch(
-#         f"/api/v1/products/{product.id}/comments/{comment.id}/",
-#         data={
-#             "author_id": user.id,
-#             "content": "hello",
-#         },
-#     )
-
-#     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-# @pytest.mark.django_db
-# def test_update_comment_if_user_is_not_the_author(api_client, authenticate):
-#     authenticate()
-#     product = baker.make(Product)
-#     user = baker.make(User)
-#     comment = baker.make(Comment)
+@pytest.mark.django_db
+def test_update_comment_if_user_is_not_authenticated(api_client):
+    product = baker.make(Product)
+    user = baker.make(User)
+    comment = baker.make(Comment)
 
-#     response = api_client.patch(
-#         f"/api/v1/products/{product.id}/comments/{comment.id}/",
-#         data={
-#             "author_id": user.id,
-#             "content": "hello",
-#         },
-#     )
+    response = api_client.patch(
+        f"/api/v1/products/{product.id}/comments/{comment.id}/",
+        data={
+            "author_id": user.id,
+            "content": "hello",
+        },
+    )
 
-#     assert response.status_code == status.HTTP_403_FORBIDDEN
-
-
-# @pytest.mark.django_db
-# def test_delete_comment_if_user_is_not_authenticated(api_client):
-#     product = baker.make(Product)
-#     comment = baker.make(Comment)
-
-#     response = api_client.delete(
-#         f"/api/v1/products/{product.id}/comments/{comment.id}/"
-#     )
-
-#     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-# @pytest.mark.django_db
-# def test_delete_comment_if_user_is_not_the_author(api_client, authenticate):
-#     authenticate()
-#     product = baker.make(Product)
-#     comment = baker.make(Comment)
+@pytest.mark.django_db
+def test_update_comment_if_user_is_not_the_author(api_client, authenticate):
+    authenticate()
+    product = baker.make(Product)
+    user = baker.make(User)
+    comment = baker.make(Comment)
 
-#     response = api_client.patch(f"/api/v1/products/{product.id}/comments/{comment.id}/")
+    response = api_client.patch(
+        f"/api/v1/products/{product.id}/comments/{comment.id}/",
+        data={
+            "author_id": user.id,
+            "content": "hello",
+        },
+    )
 
-#     assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+def test_delete_comment_if_user_is_not_authenticated(api_client):
+    product = baker.make(Product)
+    comment = baker.make(Comment)
+
+    response = api_client.delete(
+        f"/api/v1/products/{product.id}/comments/{comment.id}/"
+    )
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_delete_comment_if_user_is_not_the_author(api_client, authenticate):
+    authenticate()
+    product = baker.make(Product)
+    comment = baker.make(Comment)
+
+    response = api_client.patch(f"/api/v1/products/{product.id}/comments/{comment.id}/")
+
+    assert response.status_code == status.HTTP_403_FORBIDDEN
