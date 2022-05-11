@@ -13,7 +13,7 @@ from product.models import Product
 @pytest.fixture
 def create_product(api_client):
     def do_create_product(product):
-        return api_client.post("/api/v1/product/", product)
+        return api_client.post("/api/v1/products/", product)
 
     return do_create_product
 
@@ -61,7 +61,7 @@ def test_create_product_if_data_is_valid_returns_201(authenticate, create_produc
 def test_retrieve_if_product_exists_returns_200(api_client):
     product = baker.make(Product)
 
-    response = api_client.get(f"/api/v1/product/{product.id}/")
+    response = api_client.get(f"/api/v1/products/{product.id}/")
 
     response_content = json.loads(response.content)
 
@@ -72,7 +72,7 @@ def test_retrieve_if_product_exists_returns_200(api_client):
 
 @pytest.mark.django_db
 def test_retrieve_if_product_not_exists_returns_404(api_client):
-    response = api_client.get(f"/api/v1/product/700/")
+    response = api_client.get(f"/api/v1/products/700/")
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
@@ -82,7 +82,7 @@ def test_delete_product_if_user_is_staff_returns_204(authenticate, api_client):
     product = baker.make(Product)
     authenticate(is_staff=True)
 
-    response = api_client.delete(f"/api/v1/product/{product.id}/")
+    response = api_client.delete(f"/api/v1/products/{product.id}/")
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
@@ -92,6 +92,6 @@ def test_delete_product_if_user_is_not_staff_returns_403(authenticate, api_clien
     product = baker.make(Product)
     authenticate()
 
-    response = api_client.delete(f"/api/v1/product/{product.id}/")
+    response = api_client.delete(f"/api/v1/products/{product.id}/")
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
