@@ -30,7 +30,11 @@ Then download and install docker and docker-compose
 * [docker](https://docs.docker.com/engine/install/)
 * [docker-compose](https://docs.docker.com/compose/install/)  
 
-Now run the project with **docker-compose**.
+First of all make a copy of .env-sample
+```
+cp .env-sample .env
+```
+Then run the project with **docker-compose**.
 ```
 $ docker-compose up
 ```
